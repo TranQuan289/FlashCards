@@ -1,6 +1,5 @@
 import 'package:flash_cards/style/text_style.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,7 +10,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
-  PageController _pageController = PageController();
+  late PageController _pageController;
+  @override
+  void initState() {
+    _pageController = PageController(viewportFraction: 0.91);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -33,14 +38,15 @@ class _HomePageState extends State<HomePage> {
               style: AppStyles.h3.copyWith(color: Colors.black, fontSize: 36)),
         ),
         // ignore: avoid_unnecessary_containers
-        body: Container(
+        body: SizedBox(
           width: double.infinity,
-          margin: const EdgeInsets.symmetric(horizontal: 24),
+          //margin: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             children: [
               Container(
                   height: size.height * 1 / 10,
-                  padding: const EdgeInsets.all(16),
+                  // padding: const EdgeInsets.all(16),
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
                   alignment: Alignment.centerLeft,
                   child: Text(
                     '"rat vui khi duoc gap ban ne e e e e e e e  ee e e e e e"',
@@ -59,7 +65,8 @@ class _HomePageState extends State<HomePage> {
                     itemCount: 5,
                     itemBuilder: (context, index) {
                       return Container(
-                        padding: const EdgeInsets.all(10),
+                        padding:
+                            const EdgeInsets.only(left: 20, right: 20, top: 30),
                         margin: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 6),
                         decoration: const BoxDecoration(
@@ -70,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              margin: const EdgeInsets.only(right: 15, top: 15),
+                              margin: const EdgeInsets.only(right: 10, top: 1),
                               alignment: Alignment.centerRight,
                               child: const Icon(
                                 Icons.heart_broken,
@@ -78,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 25),
+                              padding: const EdgeInsets.only(top: 20),
                               child: RichText(
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -109,7 +116,8 @@ class _HomePageState extends State<HomePage> {
                               padding: const EdgeInsets.only(top: 24),
                               child: Text(
                                 '"nit dang lam gi ma k co tra loi tin nhan tran cun"',
-                                style: AppStyles.h4.copyWith(letterSpacing: 1),
+                                style: AppStyles.h4.copyWith(
+                                    letterSpacing: 1, color: Colors.black87),
                               ),
                             )
                           ],
@@ -121,6 +129,7 @@ class _HomePageState extends State<HomePage> {
                 height: size.height * 1 / 11,
                 // ignore: avoid_unnecessary_containers
                 child: Container(
+                  margin: const EdgeInsets.only(left: 20),
                   padding: const EdgeInsets.symmetric(vertical: 24),
                   child: ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
