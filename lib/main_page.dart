@@ -5,6 +5,7 @@ import 'package:flash_cards/model/english_today.dart';
 import 'package:flash_cards/style/text_style.dart';
 import 'package:flash_cards/widgets/app_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -68,6 +69,10 @@ class _HomePageState extends State<HomePage> {
       key: _scaffoldKey,
       backgroundColor: const Color(0xffEDF2FB),
       appBar: AppBar(
+        // ignore: prefer_const_constructors
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: const Color(0xffEDF2FB),
+        ),
         backgroundColor: const Color(0xffEDF2FB),
         elevation: 0,
         leading: InkWell(
@@ -93,12 +98,12 @@ class _HomePageState extends State<HomePage> {
             Container(
                 height: size.height * 1 / 10,
                 // padding: const EdgeInsets.all(16),
-                margin: const EdgeInsets.symmetric(horizontal: 24),
-                alignment: Alignment.centerLeft,
+                margin: const EdgeInsets.symmetric(horizontal: 40),
+                alignment: Alignment.center,
                 child: Text(
-                  '"rat vui khi duoc gap ban ne e e e e e e e  ee e e e e e"',
+                  '"Five English words every day"',
                   style: AppStyles.h5
-                      .copyWith(fontSize: 16, color: Colors.black87),
+                      .copyWith(fontSize: 20, color: Colors.black87),
                 )),
             SizedBox(
               height: size.height * 2 / 3,
@@ -133,14 +138,14 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          // ignore: avoid_unnecessary_containers
                           Container(
-                            margin: const EdgeInsets.only(right: 10, top: 1),
-                            alignment: Alignment.centerRight,
-                            child: const Icon(
-                              Icons.heart_broken,
-                              color: Colors.white,
-                            ),
-                          ),
+                              margin: const EdgeInsets.only(
+                                right: 10,
+                              ),
+                              alignment: Alignment.centerRight,
+                              child: Image.asset('assets/image/heart.png',
+                                  height: 45, width: 45, color: Colors.white)),
                           Padding(
                             padding: const EdgeInsets.only(top: 20),
                             child: RichText(
@@ -208,11 +213,8 @@ class _HomePageState extends State<HomePage> {
           });
         },
         // ignore: prefer_const_constructors
-        child: Icon(
-          Icons.published_with_changes,
-          size: 40,
-          color: const Color(0xffEDF2FB),
-        ),
+        child: Image.asset('assets/image/reload.png',
+            height: 40, width: 40, color: Color(0xffEDF2FB)),
       ),
 
       drawer: Drawer(
