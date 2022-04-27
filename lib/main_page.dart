@@ -1,6 +1,7 @@
 import 'dart:math';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:english_words/english_words.dart';
+import 'package:flash_cards/control_page.dart';
 import 'package:flash_cards/model/english_today.dart';
 import 'package:flash_cards/style/text_style.dart';
 import 'package:flash_cards/widgets/app_button.dart';
@@ -71,7 +72,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         // ignore: prefer_const_constructors
         systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: const Color(0xffEDF2FB),
+          statusBarColor: const Color(0xffD7E3FC),
         ),
         backgroundColor: const Color(0xffEDF2FB),
         elevation: 0,
@@ -155,7 +156,7 @@ class _HomePageState extends State<HomePage> {
                                 text: TextSpan(
                                     text: fistLetter,
                                     style: AppStyles.h1.copyWith(
-                                        fontSize: 89,
+                                        fontSize: 80,
                                         fontWeight: FontWeight.bold,
                                         shadows: [
                                           const BoxShadow(
@@ -214,7 +215,7 @@ class _HomePageState extends State<HomePage> {
         },
         // ignore: prefer_const_constructors
         child: Image.asset('assets/image/reload.png',
-            height: 40, width: 40, color: Color(0xffEDF2FB)),
+            height: 40, width: 40, color: const Color(0xffEDF2FB)),
       ),
 
       drawer: Drawer(
@@ -225,8 +226,18 @@ class _HomePageState extends State<HomePage> {
               const Padding(padding: EdgeInsets.only(top: 24)),
               Text('Your Mind',
                   style: AppStyles.h3.copyWith(color: Colors.black)),
-              AppButton(label: 'Favorites', onTap: () {}),
-              AppButton(label: 'Your Control', onTap: () {})
+              AppButton(
+                  label: 'Favorites',
+                  onTap: () {
+                    // Navigator.push(context,
+                    //     MaterialPageRoute(builder: (_) => const ControlPage()));
+                  }),
+              AppButton(
+                  label: 'Your Control',
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => const ControlPage()));
+                  }),
             ],
           ),
         ),
