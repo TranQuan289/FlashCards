@@ -10,6 +10,8 @@ class ControlPage extends StatefulWidget {
 }
 
 class _ControlPageState extends State<ControlPage> {
+  // ignore: prefer_final_fields, unused_field
+  double _currentSliderValue = 5;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +37,50 @@ class _ControlPageState extends State<ControlPage> {
         title: Text('Your control',
             style: AppStyles.h3.copyWith(color: Colors.black, fontSize: 36)),
       ),
-      body: Container(),
+      // ignore: avoid_unnecessary_containers
+      body: Container(
+        width: double.infinity,
+        child: Column(
+          children: [
+            Spacer(),
+            Text(
+              'How much a number word at once',
+              style: AppStyles.h4.copyWith(fontSize: 18, color: Colors.black),
+            ),
+            Spacer(),
+            Text(
+              '${_currentSliderValue.toInt()}',
+              style: AppStyles.h1.copyWith(
+                  color: const Color(0xffABC4FF),
+                  fontSize: 138,
+                  fontWeight: FontWeight.bold),
+            ),
+            Spacer(),
+            Slider(
+                value: _currentSliderValue,
+                min: 5,
+                max: 100,
+                divisions: 95,
+                onChanged: (value) {
+                  setState(() {
+                    _currentSliderValue = value;
+                  });
+                }),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'slide to set',
+                style: AppStyles.h5.copyWith(color: Colors.black),
+              ),
+            ),
+            Spacer(),
+            Spacer(),
+            Spacer(),
+            const Spacer(),
+          ],
+        ),
+      ),
     );
   }
 }
