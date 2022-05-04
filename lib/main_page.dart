@@ -4,9 +4,11 @@ import 'package:english_words/english_words.dart';
 import 'package:flash_cards/control_page.dart';
 import 'package:flash_cards/model/english_today.dart';
 import 'package:flash_cards/style/text_style.dart';
+import 'package:flash_cards/values/share_keys.dart';
 import 'package:flash_cards/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -41,17 +43,21 @@ class _HomePageState extends State<HomePage> {
     return newList;
   }
 
-  getEnglishToday() {
+  getEnglishToday() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int len = prefs.getInt(ShareKeys.counter) ?? 5;
     List<String> newList = [];
-    List<int> rans = fixedListRandom(len: 5, max: nouns.length);
+    List<int> rans = fixedListRandom(len: len, max: nouns.length);
     for (var index in rans) {
       newList.add(nouns[index]);
     }
-    words = newList
-        .map((e) => EnglishToday(
-              noun: e,
-            ))
-        .toList();
+    setState(() {
+      words = newList
+          .map((e) => EnglishToday(
+                noun: e,
+              ))
+          .toList();
+    });
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -59,8 +65,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     _pageController = PageController(viewportFraction: 0.91);
-    getEnglishToday();
     super.initState();
+    getEnglishToday();
   }
 
   @override

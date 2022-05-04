@@ -1,6 +1,8 @@
 import 'package:flash_cards/style/text_style.dart';
+import 'package:flash_cards/values/share_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ControlPage extends StatefulWidget {
   const ControlPage({Key? key}) : super(key: key);
@@ -12,6 +14,22 @@ class ControlPage extends StatefulWidget {
 class _ControlPageState extends State<ControlPage> {
   // ignore: prefer_final_fields, unused_field
   double _currentSliderValue = 5;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initDefaultValue();
+  }
+
+  initDefaultValue() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int value = prefs.getInt(ShareKeys.counter) ?? 5;
+    setState(() {
+      _currentSliderValue = value.toDouble();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +42,9 @@ class _ControlPageState extends State<ControlPage> {
         backgroundColor: const Color(0xffEDF2FB),
         elevation: 0,
         leading: InkWell(
-          onTap: () {
+          onTap: () async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            await prefs.setInt(ShareKeys.counter, _currentSliderValue.toInt());
             Navigator.pop(context);
           },
           // ignore: prefer_const_constructors
@@ -38,16 +58,16 @@ class _ControlPageState extends State<ControlPage> {
             style: AppStyles.h3.copyWith(color: Colors.black, fontSize: 36)),
       ),
       // ignore: avoid_unnecessary_containers
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         child: Column(
           children: [
-            Spacer(),
+            const Spacer(),
             Text(
               'How much a number word at once',
               style: AppStyles.h4.copyWith(fontSize: 18, color: Colors.black),
             ),
-            Spacer(),
+            const Spacer(),
             Text(
               '${_currentSliderValue.toInt()}',
               style: AppStyles.h1.copyWith(
@@ -55,7 +75,7 @@ class _ControlPageState extends State<ControlPage> {
                   fontSize: 138,
                   fontWeight: FontWeight.bold),
             ),
-            Spacer(),
+            const Spacer(),
             Slider(
                 value: _currentSliderValue,
                 min: 5,
