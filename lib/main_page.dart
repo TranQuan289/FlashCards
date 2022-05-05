@@ -5,9 +5,9 @@ import 'package:flash_cards/control_page.dart';
 import 'package:flash_cards/model/english_today.dart';
 import 'package:flash_cards/style/text_style.dart';
 import 'package:flash_cards/values/share_keys.dart';
+import 'package:flash_cards/widgets/all_words_page.dart';
 import 'package:flash_cards/widgets/app_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:translator/translator.dart';
@@ -105,6 +105,7 @@ class _HomePageState extends State<HomePage> {
             style: AppStyles.h3.copyWith(color: Colors.black, fontSize: 36)),
       ),
       // ignore: avoid_unnecessary_containers
+
       body: SizedBox(
         width: double.infinity,
         //margin: const EdgeInsets.symmetric(horizontal: 24),
@@ -210,24 +211,26 @@ class _HomePageState extends State<HomePage> {
                     );
                   }),
             ),
-            SizedBox(
-              height: size.height * 1 / 11,
-              width: double.infinity,
-              // ignore: avoid_unnecessary_containers
-              child: Container(
-                color: const Color(0xffEDF2FB),
-                margin: const EdgeInsets.only(left: 20),
-                padding: const EdgeInsets.symmetric(vertical: 24),
-                child: ListView.builder(
-                    //physics: const NeverScrollableScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    addAutomaticKeepAlives: true,
-                    itemCount: len,
-                    itemBuilder: (context, index) {
-                      return buildIndicator(index == _currentIndex, size);
-                    }),
-              ),
-            )
+            _currentIndex >= 5
+                ? buildShowMore()
+                : SizedBox(
+                    height: size.height * 1 / 11,
+                    width: double.infinity,
+                    // ignore: avoid_unnecessary_containers
+                    child: Container(
+                      color: const Color(0xffEDF2FB),
+                      margin: const EdgeInsets.only(left: 20),
+                      padding: const EdgeInsets.symmetric(vertical: 24),
+                      child: ListView.builder(
+                          //physics: const NeverScrollableScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          addAutomaticKeepAlives: true,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return buildIndicator(index == _currentIndex, size);
+                          }),
+                    ),
+                  )
           ],
         ),
       ),
@@ -271,7 +274,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildIndicator(bool isActive, Size size) {
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.bounceInOut,
       margin: const EdgeInsets.symmetric(horizontal: 12),
       width: isActive ? size.width * 1 / 5 : 24,
       decoration: BoxDecoration(
@@ -286,4 +291,30 @@ class _HomePageState extends State<HomePage> {
           ]),
     );
   }
+}
+
+Widget buildShowMore() {
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+    alignment: Alignment.centerLeft,
+    child: Material(
+        borderRadius: const BorderRadius.all(Radius.circular(24)),
+        elevation: 4,
+        color: const Color(0xffABC4FF),
+        child: InkWell(
+          onTap: () {
+            // Navigator.push(context,
+            //     MaterialPageRoute(builder: (_) => AllWords(words: this.words)));
+          },
+          splashColor: Colors.blueAccent,
+          borderRadius: const BorderRadius.all(Radius.circular(24)),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            child: Text(
+              'Show more',
+              style: AppStyles.h5,
+            ),
+          ),
+        )),
+  );
 }
