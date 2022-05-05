@@ -7,8 +7,10 @@ import 'package:flash_cards/style/text_style.dart';
 import 'package:flash_cards/values/share_keys.dart';
 import 'package:flash_cards/widgets/app_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:translator/translator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,7 +20,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  GoogleTranslator translator = GoogleTranslator();
   int _currentIndex = 0;
+  int len = 0;
+  String ts = '';
+  // ignore: prefer_collection_literals
+  Map map = Map<int, String>();
   late PageController _pageController;
 
   List<EnglishToday> words = [];
@@ -45,8 +52,9 @@ class _HomePageState extends State<HomePage> {
 
   getEnglishToday() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int len = prefs.getInt(ShareKeys.counter) ?? 5;
+    len = prefs.getInt(ShareKeys.counter) ?? 5;
     List<String> newList = [];
+
     List<int> rans = fixedListRandom(len: len, max: nouns.length);
     for (var index in rans) {
       newList.add(nouns[index]);
@@ -126,8 +134,14 @@ class _HomePageState extends State<HomePage> {
                     // ignore: unused_local_variable, non_constant_identifier_names
                     String? Letter = words[index].noun ?? '';
                     String fistLetter = Letter.substring(0, 1);
-
                     String leftLetter = Letter.substring(1, Letter.length);
+                    // ignore: avoid_print
+                    translator
+                        .translate(Letter.toString(), from: 'en', to: 'vi')
+                        .then((s) {
+                      // ignore: unused_local_variable
+                      ts = s.toString();
+                    });
                     return Container(
                       padding:
                           const EdgeInsets.only(left: 20, right: 20, top: 30),
@@ -162,7 +176,7 @@ class _HomePageState extends State<HomePage> {
                                 text: TextSpan(
                                     text: fistLetter,
                                     style: AppStyles.h1.copyWith(
-                                        fontSize: 80,
+                                        fontSize: 70,
                                         fontWeight: FontWeight.bold,
                                         shadows: [
                                           const BoxShadow(
@@ -174,6 +188,7 @@ class _HomePageState extends State<HomePage> {
                                       TextSpan(
                                           text: leftLetter,
                                           style: AppStyles.h2.copyWith(
+                                              fontSize: 50,
                                               shadows: [
                                                 const BoxShadow(
                                                     blurRadius: 0,
@@ -181,10 +196,11 @@ class _HomePageState extends State<HomePage> {
                                               ]))
                                     ])),
                           ),
+
                           Padding(
                             padding: const EdgeInsets.only(top: 24),
                             child: Text(
-                              '"tự xài gg dịch mà dịch nha :>"',
+                              ts,
                               style: AppStyles.h4.copyWith(
                                   letterSpacing: 1, color: Colors.black87),
                             ),
@@ -196,14 +212,17 @@ class _HomePageState extends State<HomePage> {
             ),
             SizedBox(
               height: size.height * 1 / 11,
+              width: double.infinity,
               // ignore: avoid_unnecessary_containers
               child: Container(
+                color: const Color(0xffEDF2FB),
                 margin: const EdgeInsets.only(left: 20),
                 padding: const EdgeInsets.symmetric(vertical: 24),
                 child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
+                    //physics: const NeverScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
-                    itemCount: 5,
+                    addAutomaticKeepAlives: true,
+                    itemCount: len,
                     itemBuilder: (context, index) {
                       return buildIndicator(index == _currentIndex, size);
                     }),
